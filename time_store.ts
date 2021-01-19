@@ -1,14 +1,16 @@
-import { useMemo } from 'react'
-import {
-  applySnapshot,
-  Instance,
-  SnapshotIn,
-  SnapshotOut,
-  types,
-} from 'mobx-state-tree'
+import {useMemo} from 'react'
+import {applySnapshot, Instance, SnapshotIn, SnapshotOut, types,} from 'mobx-state-tree'
 
 let store: IStore | undefined
 
+/**
+ * Use mobx-state-tree to define a store
+ * model : properties
+ * This one is your struct state
+ *
+ * action: methods
+ *
+ */
 const Store = types
   .model({
     lastUpdate: types.Date,
@@ -23,7 +25,7 @@ const Store = types
         // because typescript doesn't yet know about the actions we're
         // adding to self here)
         ;(self as any).update()
-      }, 1000)
+      }, 1)
     }
     const update = () => {
       self.lastUpdate = new Date(Date.now())
@@ -39,7 +41,7 @@ export type IStore = Instance<typeof Store>
 export type IStoreSnapshotIn = SnapshotIn<typeof Store>
 export type IStoreSnapshotOut = SnapshotOut<typeof Store>
 
-export function initializeStore(snapshot = null) {
+export function initializeStore(snapshot: IStore = null): IStore {
   const _store = store ?? Store.create({ lastUpdate: 0 })
 
   // If your page has Next.js data fetching methods that use a Mobx store, it will
@@ -55,7 +57,19 @@ export function initializeStore(snapshot = null) {
   return store
 }
 
+/**
+ * In next_page : you can init your store via ssr or ssg
+ * const store = initializeStore()
+ * Generate a children props as initialState : return { props: { initialState: getSnapshot(store) } }
+ *
+ * In parent component like _app: you must use provider from mobx-react to inject your store
+ * const store = useStore(pageProps.initialState)
+ * <Provider store={store}></Provider>
+ *
+ * Import this function and use it your component
+ * Ex: const { lastUpdate, light, start, stop } = useStore('')
+ * @param initialState
+ */
 export function useStore(initialState: any) {
-  const store = useMemo(() => initializeStore(initialState), [initialState])
-  return store
+  return useMemo(() => initializeStore(initialState), [initialState])
 }

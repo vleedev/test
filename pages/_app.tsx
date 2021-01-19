@@ -1,11 +1,11 @@
 import { Provider } from 'mobx-react'
-import { useStore } from '../store'
+import { useStore } from '../time_store'
 
 export default function App({ Component, pageProps }) {
-  const store = useStore(pageProps.initialState)
+  const timeStore = useStore(pageProps.initialState)
 
   return (
-    <Provider store={store}>
+    <Provider store={timeStore}>
       <Component {...pageProps} />
     </Provider>
   )

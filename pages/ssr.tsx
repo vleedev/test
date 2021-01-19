@@ -1,6 +1,6 @@
 import { getSnapshot } from 'mobx-state-tree'
 import SampleComponent from '../components/SampleComponent'
-import { initializeStore } from '../store'
+import { initializeStore } from '../time_store'
 
 export default function Ssr() {
   return <SampleComponent title={'SSR Page'} linkTo="/" />
@@ -10,9 +10,9 @@ export default function Ssr() {
 // that is because the page becomes a serverless function instead of being statically
 // exported when you use `getServerSideProps` or `getInitialProps`
 export function getServerSideProps() {
-  const store = initializeStore()
+  const timeStore = initializeStore()
 
-  store.update()
+  timeStore.update()
 
-  return { props: { initialState: getSnapshot(store) } }
+  return { props: { initialState: getSnapshot(timeStore) } }
 }
