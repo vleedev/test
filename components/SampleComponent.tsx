@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import Link from 'next/link'
-import { IStore, useStore } from '../time_store'
+import { IStore, useStore } from '../stores/time_store'
 import Clock from './Clock'
 
 interface IOwnProps {

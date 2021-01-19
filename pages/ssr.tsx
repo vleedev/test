@@ -1,6 +1,6 @@
 import { getSnapshot } from 'mobx-state-tree'
 import SampleComponent from '../components/SampleComponent'
-import { initializeStore } from '../time_store'
+import { initializeStore } from '../stores/time_store'
 
 export default function Ssr() {
   return <SampleComponent title={'SSR Page'} linkTo="/" />
