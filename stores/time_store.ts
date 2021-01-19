@@ -19,13 +19,15 @@ const Store = types
   .actions((self) => {
     let timer: any
     const start = () => {
+      // This function will be run automatically.
+      // It will call update function
       timer = setInterval(() => {
         // mobx-state-tree doesn't allow anonymous callbacks changing data.
         // Pass off to another action instead (need to cast self as any
         // because typescript doesn't yet know about the actions we're
         // adding to self here)
         ;(self as any).update()
-      }, 1)
+      }, 1000)
     }
     const update = () => {
       self.lastUpdate = new Date(Date.now())
@@ -34,6 +36,7 @@ const Store = types
     const stop = () => {
       clearInterval(timer)
     }
+    // We have to return to list of methods
     return { start, stop, update }
   })
 
